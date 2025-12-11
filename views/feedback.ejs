@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+  <link rel="stylesheet" href="feedback.css">
+</head>
+<body>
+     <nav>
+        <p>which is my Bus</p>
+        <button class="home">Home</button>
+    </nav>
+  
+    <div class="container">
+
+    <!-- Bus Image -->
+    <div class="bus-img-box">
+        <img id="busImg" src="bus.jpg" alt="Bus Image">
+    </div>
+
+    <!-- Bus Details -->
+    <div class="bus-details">
+        <h2 id="busName">GreenLine Express</h2>
+        <p id="regNo">Reg No: KL 45 B 2211</p>
+    </div>
+
+    <!-- Feedback Form -->
+    <form class="feedback-form">
+        <h3>Give Feedback</h3>
+
+        <label>Your Name</label>
+        <input type="text" placeholder="Enter your name" required id="name">
+
+        <label>Your Comment</label>
+        <textarea placeholder="Write your feedback here..." required id="comment"></textarea>
+
+        <button id="submitbtn">Submit</button>
+    </form>
+
+</div>
+
+    <script>
+         let homebtn = document.querySelector(".home");
+         let name=document.getElementById("name");
+         let comment=document.getElementById("comment");
+        homebtn.addEventListener("click", async () => {
+            window.location.href = "/";
+        })
+        const info=JSON.parse(localStorage.getItem("info"));
+        busImg.src=info.src;
+        document.getElementById("busName").innerHTML=info.name;
+        document.getElementById("regNo").innerHTML=`Reg No: ${info.no}`;
+       // console.log(info)
+            submitbtn.addEventListener("click",async ()=>{
+              event.preventDefault();
+            if(name.value && comment.value){
+                 submitbtn.disabled = true;
+                 submitbtn.textContent = "submitting...";
+                let data={
+                    busname:info.name,
+                    regno:info.no,
+                    name:name.value,
+                    comment:comment.value
+                };
+                    try {
+                    let post = await fetch("/createcomment", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await post.json();
+
+                    if (result.success) {
+                        alert("🎉 comment submitted successfully!");
+                    } else {
+                        alert("❌ Something went wrong!");
+                    }
+                } catch (err) {
+                    alert("❌ Server error!");
+                }
+                name.value=""; comment.value="";
+                 submitbtn.disabled = false;
+                submitbtn.textContent = "Submit";
+            }
+            else{
+                alert("please fill all fields")
+            }
+        })
+    </script>
+</body>
+</html>

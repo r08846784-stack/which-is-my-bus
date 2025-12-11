@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <section class="first">
+        <nav>
+            <p>which is my Bus</p>
+            <button id="login">admin</button>
+        </nav>
+        <div class="imgcontainer">
+            <div class="formcontainer">
+                <input id="text1" type="text" placeholder="start...">
+                <input id="text2" type="text" placeholder="Destination...">
+                <button id="submit">submit</button>
+            </div>
+        </div>
+    </section>
+    <div class="resbar">
+        <p>Bus Result...</p>
+    </div>
+    <ul class="buslist">
+      
+    </ul>
+    <div class="footer">
+        <p>Developed by Tanmoy Roy</p>
+        <p>Contact:8293909847</p>
+    </div>
+    <script>
+
+        let loginbtn = document.getElementById("login")
+        let ul = document.querySelector(".buslist");
+        let li = document.getElementsByTagName("li");
+        let more = document.getElementsByClassName("more");
+        let text1 = document.getElementById("text1");
+        let text2 = document.getElementById("text2");
+        let newarr = [];
+        document.getElementById("submit").addEventListener("click", async () => {
+            if (text1.value && text2.value) {
+                let a = await fetch("/show");
+                let data = await a.json();
+                let val1 = text1.value.trim().toLowerCase();
+                let val2 = text2.value.trim().toLowerCase();
+                Array.from(data).forEach(e => {
+                    if (e.stops.includes(val1) && e.stops.includes(val2)) {
+                        newarr.push(e);
+                    }
+                })
+                ul.innerHTML = "";
+                Array.from(newarr).forEach(e => {
+                    ul.innerHTML = ul.innerHTML + ` <li>
+            <div class="layout">
+                <div class="left">
+                    <img class="card-img-left example-card-img-responsive" src=${e.img} alt="NEWTON" width="90px">
+                </div>
+                <div class="right">
+                    <p><b>${e.busname}</b></p>
+                    <p style="display:inline-block">Reg No:${e.regno}</p><button style="  padding: 8px 12px;
+            border-radius: 8px;
+            background-color: #28c42e;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 10px;margin-left:21px;">comment</button>
+                    <p class="spans"><span>${val1}</span><span>${val2}</span></p>
+                </div>
+            </div>
+             <div class="more display">
+            <p>Stoppage Name => ${e.stops}</p>
+          
+            </div>
+        </li>`
+                    newarr = [];
+                })
+                window.scrollBy({
+                    top: 200,
+                    behavior: "smooth"
+                })
+                savedata();
+            }
+            else {
+                alert("plz enter locations");
+            }
+        })
+        ul.addEventListener('click', async function (e) {
+            const li = e.target.closest('li');
+            const btn=e.target.closest('button');
+            if (!li) return;
+             if(li&&(!btn)){
+            const clickedMore = li.querySelector('.more');
+
+            // 1. Close ALL other .more divs
+            document.querySelectorAll('.buslist .more').forEach(div => {
+                if (div !== clickedMore) {
+                    div.classList.add('display');   // ensure they are closed
+                }
+            });
+
+            // 2. Toggle only the clicked one
+            clickedMore.classList.toggle('display');
+        }
+        else{
+          const busname = li.querySelector(".right p b").textContent;
+        const imgSrc = li.querySelector(".left img").getAttribute("src");
+        const regno = li.querySelector(".right p:nth-of-type(2)").textContent.replace("Reg No:", "");
+
+         let info={
+            name:busname,
+            src:imgSrc,
+            no:regno
+         };
+        localStorage.setItem("info",JSON.stringify(info));
+          window.location.href = "/feedback";
+         
+        }
+        });
+        loginbtn.addEventListener("click", async () => {
+
+            // let a= await fetch("/forms");
+            //let b=await a.json();
+            window.location.href = "/forms";
+        })
+        function savedata() {
+            localStorage.setItem("name", ul.innerHTML)
+        }
+        function showdata() {
+            let a = localStorage.getItem("name")
+            return a
+        }
+
+          ul.innerHTML=showdata();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="form.css">
+</head>
+
+<body>
+    <nav>
+        <p>which is my Bus</p>
+        <button class="home">Home</button>
+    </nav>
+    <div class="maincontainer">
+        <div class="form-container">
+            <h2>Bus Details Form</h2>
+
+            <form>
+                <label for="busname">Bus Name</label>
+                <input type="text" id="busname" name="busname" placeholder="Enter bus name">
+
+                <label for="regno">Registration Number</label>
+                <input type="text" id="regno" name="regno" placeholder="Enter registration no">
+
+                <label for="imgsrc">Image Source</label>
+                <input type="text" id="imgsrc" name="imgsrc" placeholder="Enter image URL">
+
+                <label for="stops">Stops</label>
+                <textarea id="stops" name="stops" placeholder="Enter stops"></textarea>
+
+                <button id="submitbtn">Submit</button>
+            </form>
+        </div>
+
+
+        <div class="container">
+            <h2>Bus Comment Viewer</h2>
+
+            <div class="form-group">
+                <label>Bus Name</label>
+                <input type="text" placeholder="Enter bus name" id="cbusname">
+            </div>
+
+            <div class="form-group">
+                <label>Registration Number</label>
+                <input type="text" placeholder="Enter registration number" id="cregno">
+            </div>
+
+            <button id="view" class="btn">View Comments</button>
+
+            <!-- Example comments preview (for UI only) -->
+            <div class="comments-box">
+                <div class="comment">
+                    <div class="name">John Doe</div>
+                    <div class="text">The bus was clean and on time.</div>
+                </div>
+                <div class="comment">
+                    <div class="name">Priya Sharma</div>
+                    <div class="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Aliquam perspiciatis voluptates fuga eius eos dignissimos vero ab voluptas sed, aperiam, officiis distinctio praesentium odio. Sapiente, saepe architecto. Exercitationem, inventore saepe.</div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="form-container" style="margin-top: 1px;">
+            <h2>Delete Bus</h2>
+
+            <form>
+                <label for="del_busname">Bus Name</label>
+                <input type="text" id="del_busname" name="del_busname" placeholder="Enter bus name">
+
+                <label for="del_regno">Registration Number</label>
+                <input type="text" id="del_regno" name="del_regno" placeholder="Enter registration no">
+
+                <button id="deletebtn" style="background-color: #d9534f;">Delete</button>
+            </form>
+        </div>
+
+
+
+
+    </div>
+    <script>
+        function csvToArray(str) {
+            return str.split(',').map(item => item.trim());
+        }
+        let submitbtn = document.getElementById("submitbtn");
+        let homebtn = document.querySelector(".home");
+        let cbusname = document.getElementById("cbusname");
+        let cregno = document.getElementById("cregno");
+        let newarr = [];
+        let commentbox = document.querySelector(".comments-box")
+
+        view.addEventListener("click", async () => {
+            if (cbusname.value && cregno.value) {
+                let a = await fetch("/commentshow");
+                let data = await a.json();
+
+                Array.from(data).forEach(e => {
+                    if (e.busname === cbusname.value && e.regno === cregno.value) {
+                        newarr.push(e);
+                    }
+                })
+                commentbox.innerHTML = "";
+                Array.from(newarr).forEach(e => {
+                    commentbox.innerHTML = commentbox.innerHTML + ` <div class="comment">
+                    <div class="name">${e.username}</div>
+                    <div class="text">${e.comment}</div>
+                </div>`
+                })
+                newarr = [];
+            }
+            else{
+                alert("please fill all fields")
+            }
+        })
+
+
+        homebtn.addEventListener("click", async () => {
+            window.location.href = "/";
+        })
+
+        submitbtn.addEventListener("click", async () => {
+            event.preventDefault();
+            // console.log(busname.value);
+            if (busname.value && regno.value && imgsrc.value && stops.value) {
+                submitbtn.disabled = true;
+                submitbtn.textContent = "Submitting...";
+
+                const arr = csvToArray(stops.value);
+                let data = {
+                    busname: busname.value,
+                    regno: regno.value,
+                    imgsrc: imgsrc.value,
+                    stops: arr
+                };
+                //  console.log(data);
+                try {
+                    let post = await fetch("/generate", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await post.json();
+
+                    if (result.success) {
+                        alert("🎉 Bus created successfully!");
+                    } else {
+                        alert("❌ Something went wrong!");
+                    }
+                } catch (err) {
+                    alert("❌ Server error!");
+                }
+                busname.value = "";
+                regno.value = "";
+                imgsrc.value = "";
+                stops.value = "";
+                submitbtn.disabled = false;
+                submitbtn.textContent = "Submit";
+
+
+            }
+            else {
+                alert("please fill all fields");
+            }
+        })
+        deletebtn.addEventListener("click", async () => {
+            event.preventDefault();
+            if (del_busname.value && del_regno.value) {
+                deletebtn.disabled = true;
+                deletebtn.textContent = "deleting...";
+                let data = {
+                    busname: del_busname.value,
+                    regno: del_regno.value
+                };
+                try {
+                    let post = await fetch("/delete", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(data)
+                    });
+                    const result = await post.json();
+
+                    if (result.success) {
+                        alert("🎉 Bus deleted successfully!");
+                    } else {
+                        alert("❌ Something went wrong!");
+                    }
+                } catch (err) {
+                    alert("❌ Server error!");
+                }
+                del_busname.value = ""; del_regno.value = "";
+                deletebtn.disabled = false;
+                deletebtn.textContent = "delete";
+            }
+            else {
+                alert("please fill all fields")
+            }
+        })
+    </script>
+</body>
+
+</html>
