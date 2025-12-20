@@ -1,108 +1,152 @@
 * {
-           margin: 0px;
-           padding: 0px;
-        }
-        .first nav{
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            background-color: #055C9D;
-            padding: 17px;
-        }
-        nav p{
-            color: white;
-            font-size: 32px;
-            font-weight: bolder;
-        }
-        nav button{
-            padding: 10px 20px;
-            border-radius: 8px;
-            background-color: #0b0bdb;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 15px;
-        }
-        .imgcontainer{
-           height: 70vh;
-           background-image: url(https://wbbus.in/image/bus2.jpg);
-           background-position: bottom center;
-           display: flex;
-           justify-content: center;
-           align-items: center;
-        }
-        .formcontainer{
-            display: flex;
-            gap: 20px;
-            text-align: center;
-        }
-         .formcontainer input{
-            padding: 15px 30px;
-           border:none;
-           font-size: 14px;
-         }
-          .formcontainer button{
-             padding: 10px 20px;
-            border-radius: 8px;
-            background-color: #0b0bdb;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 15px;
-          }
-          .resbar{
-            padding: 12px;
-            background-color: #d1eef0;
-          }
-          .resbar p{
-            text-align: center;
-            font-size: 30px;
-            font-weight: bold;
-          }
-          .layout{
-            display: flex;
-            align-items: center;
-            gap: 19px;
-          
-            width: 29vw;
-          }
-          .buslist{
-            width: 80vw;
-    margin: 20px auto;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-          }
-          .buslist li{
-            list-style: none;
-            cursor: pointer;
-              border: 2px solid gray;
-          }
-          .right p{
-            font-size: 22px;
-          }
-          .spans{
-            display: flex;
-            gap: 17px;
-          }
-          .footer{
-            display: flex;
-            padding: 30px;
-            background-color: #064964;
-            color: #68BBE3;
-            justify-content: space-around;
-            align-items: center;
-          }
-          .footer p{
-            font-size: 20px;
-          }
-           .display{
-             display: none;
-          }
-          .more p{
-            text-align: center;
-            font-size: 19px;
-            padding: 10px;
-          }
+  margin: 0px;
+  padding: 0px;
+}
+
+.first nav {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  background-color: #055C9D;
+  padding: 17px;
+}
+
+nav p {
+  color: white;
+  font-size: 32px;
+  font-weight: bolder;
+}
+
+nav button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #0b0bdb;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.imgcontainer {
+  height: 70vh;
+  background-image: url(https://wbbus.in/image/bus2.jpg);
+  background-position: bottom center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.formcontainer {
+  display: flex;
+  gap: 20px;
+  text-align: center;
+}
+
+.formcontainer input {
+  padding: 15px 30px;
+  border: none;
+  font-size: 14px;
+}
+
+.formcontainer button {
+  padding: 10px 20px;
+  border-radius: 8px;
+  background-color: #0b0bdb;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.resbar {
+  padding: 12px;
+  background-color: #d1eef0;
+}
+
+.resbar p {
+  text-align: center;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.layout {
+  display: flex;
+  align-items: center;
+  gap: 19px;
+
+ 
+}
+
+.buslist {
+  width: 80vw;
+  margin: 20px auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.buslist li {
+  list-style: none;
+  cursor: pointer;
+  border: 2px solid gray;
+}
+
+.right p {
+  font-size: 22px;
+}
+
+.spans {
+  display: flex;
+  gap: 17px;
+}
+
+.footer {
+  display: flex;
+  padding: 30px;
+  background-color: #064964;
+  color: #68BBE3;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.footer p {
+  font-size: 20px;
+}
+
+.display {
+  display: none;
+}
+
+.more p {
+  text-align: center;
+  font-size: 19px;
+  padding: 10px;
+}
+
+@media screen and (max-width:940px) {
+  .buslist{
+    flex-direction: column;
+  }
+ 
+}
+@media screen and (max-width:630px) {
+   .formcontainer{
+    flex-direction: column;
+   }
+}
+@media screen and (max-width:470px) {
+   .footer{
+    flex-direction: column;
+    gap: 10px;
+   }
+   nav p{
+    font-size: 25px;
+   }
+}
+@media screen and (max-width:380px) {
+   .right p{
+    font-size: 17px;
+   }
+}
