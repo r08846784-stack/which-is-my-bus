@@ -1,4 +1,5 @@
 const express = require('express')
+const cors = require('cors');//change
 require('dotenv').config();
 const mongoose = require('mongoose');
 const Bus = require("./models/model");
@@ -7,6 +8,7 @@ mongoose.connect(process.env.MONGO_URI);//mongodb://127.0.0.1:27017/bus
 
 const app = express()
 //const port = 3000
+app.use(cors());//change
 app.use(express.static('public'));
 app.use(express.json());
 app.set('view engine', 'ejs');
